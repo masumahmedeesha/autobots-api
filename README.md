@@ -1,5 +1,7 @@
 ## All Command line Tools
-```
+
+#### Get Started: New Project and Prisma
+```bash
 $ npx @nestjs/cli new median: Project_Name
 $ npm run start:dev
 $ docker-compose up (this will create a container of postgre sql on docker so that we can be able to use that postgre sql without installing it on PC. After that, setup database url in .env)
@@ -9,7 +11,10 @@ $ npm install prisma --save-dev
 $ npx prisma init
 $ npx prisma migrate dev --name "init"
 
-Problems
+```
+
+#### Problems - Linitng issues
+```bash
 add primsa to lint on package.json you can use 
 $ npx eslint prisma/seed.ts --fix to fix manually or 
 $ npm run lint
@@ -23,8 +28,10 @@ then create .vscode/settings.json and paste following. This will lint and format
         "source.fixAll.eslint": true
     },
 }
+```
 
-Seeding
+#### Prisma Seeding, Module, Services, Resources
+```bash
 add following at the end of the package.json to run the seed
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -36,11 +43,14 @@ Prisma to NestJS
 $ npx nest generate module prisma
 $ npx nest generate service prisma
 and made changes on prisma.module.ts and prisma.service.ts (just like in this project)
+$ npx nest generate resource
+```
 
-Swagger
+#### Swagger
+```bash
 $ npm install --save @nestjs/swagger swagger-ui-express
 add these following line in main.ts inside bootstrap()
-```
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Auto bots')
     .setDescription('Calling all autobots - Optimus Prime')
@@ -48,11 +58,11 @@ add these following line in main.ts inside bootstrap()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('apidocs', app, document);
-  
   await app.listen(3000);
+  
 ```
 
-```
+
 ## Installation
 
 ```bash
@@ -84,17 +94,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
