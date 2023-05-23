@@ -7,19 +7,19 @@ import {
   Param,
   Delete,
   NotFoundException,
-  InternalServerErrorException,
-  UseFilters,
+  // InternalServerErrorException,
+  // UseFilters,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
-import { PrismaClientExceptionFilter } from 'src/prisma-client-exception/prisma-client-exception.filter';
+// import { PrismaClientExceptionFilter } from 'src/prisma-client-exception/prisma-client-exception.filter';
 
 @Controller('users')
 @ApiTags('users')
-@UseFilters(PrismaClientExceptionFilter) // universal
+// @UseFilters(PrismaClientExceptionFilter) // all requests of this controller
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
