@@ -1,16 +1,65 @@
 ## All Command line Tools
 
-#### Get Started: New Project and Prisma
+[Notion Docs - Brief Description](https://prismaio.notion.site/Let-s-build-a-REST-API-with-NestJS-and-Prisma-94258f8a78d7460883d5b900f706e9ae)
+
+#### Get Started: New Project and PostgreSQL in docker container
 ```bash
 $ npx @nestjs/cli new median: Project_Name
 $ npm run start:dev
 $ docker-compose up (this will create a container of postgre sql on docker so that we can be able to use that postgre sql without installing it on PC. After that, setup database url in .env)
 DATABASE_URL="postgres://postgres:postgres@localhost:5432/universal-db"
+```
 
+#### Prisma Seeding, Module, Services, Resources
+```bash
 $ npm install prisma --save-dev
 $ npx prisma init
+(Create/Write Schema Models)
 $ npx prisma migrate dev --name "init"
 
+# add following at the end of the package.json to run the seed
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+
+$ npx prisma db seed
+$ npx prisma studio
+
+# Prisma to NestJS
+$ npx nest generate module prisma
+$ npx nest generate service prisma
+and made changes on prisma.module.ts and prisma.service.ts (just like in this project)
+$ npx nest generate resource
+=> Dto means Data Transfer Object. What object will be inserted into the model. Just like request.body input.
+=> UserEntity is used to show ApiResponse in Swagger, if you do not use this, you can go on in Controller. and UserEntity should implement User from @primsa/client.
+=> Query should be written inside users.service.ts. 
+=> All of error handling, ApiTags or UserEntity in users.controller.ts. Without Query, everything is controllerd by controller.
+
+# Validators
+$ npm install class-validator class-transformer
+(basically this would validate dto in createUserDto)
+add this on main.ts
+app.useGlobalPipes(new ValidationPipe());
+
+# Error handling
+$ npx nest generate filter prisma-client-exception
+or 
+$ npx nest g f prisma-client-exception
+
+# Testing (Jest) - Follow the docs if you have any problems
+$ npm i dotenv-cli --save-dev
+=> Edit test:e2e in scripts of package.json with
+ "test:e2e": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed  && dotenv -e .env.test -- jest --runInBand --config ./test/jest-e2e.json;"
+
+=> Add following to test/jest-e2e.json
+{
+  ...,
+  "moduleDirectories": [
+    "<rootDir>/../",
+    "node_modules"
+  ]
+}
+$ npm run test:e2e
 ```
 
 #### Problems - Linitng issues
@@ -30,22 +79,6 @@ then create .vscode/settings.json and paste following. This will lint and format
 }
 ```
 
-#### Prisma Seeding, Module, Services, Resources
-```bash
-add following at the end of the package.json to run the seed
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  }
-$ npx prisma db seed
-$ npx prisma studio
-
-Prisma to NestJS
-$ npx nest generate module prisma
-$ npx nest generate service prisma
-and made changes on prisma.module.ts and prisma.service.ts (just like in this project)
-$ npx nest generate resource
-```
-
 #### Swagger
 ```bash
 $ npm install --save @nestjs/swagger swagger-ui-express
@@ -59,7 +92,7 @@ add these following line in main.ts inside bootstrap()
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('apidocs', app, document);
   await app.listen(3000);
-  
+
 ```
 
 
