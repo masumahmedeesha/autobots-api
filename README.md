@@ -34,19 +34,31 @@ $ npx nest generate resource
 => UserEntity is used to show ApiResponse in Swagger, if you do not use this, you can go on in Controller. and UserEntity should implement User from @primsa/client.
 => Query should be written inside users.service.ts. 
 => All of error handling, ApiTags or UserEntity in users.controller.ts. Without Query, everything is controllerd by controller.
+```
 
-# Validators
+#### Validators and Error Handling
+```bash
 $ npm install class-validator class-transformer
+
 (basically this would validate dto in createUserDto)
 add this on main.ts
+
 app.useGlobalPipes(new ValidationPipe());
+app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
 # Error handling
 $ npx nest generate filter prisma-client-exception
 or 
 $ npx nest g f prisma-client-exception
 
-# Testing (Jest) - Follow the docs if you have any problems
+add following on main.ts if you want global
+
+const { httpAdapter } = app.get(HttpAdapterHost);
+app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+```
+
+#### Testing (Jest) - Follow the docs if you have any problems
+```bash
 $ npm i dotenv-cli --save-dev
 => Edit test:e2e in scripts of package.json with
  "test:e2e": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed  && dotenv -e .env.test -- jest --runInBand --config ./test/jest-e2e.json;"
