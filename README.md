@@ -15,14 +15,14 @@ DATABASE_URL="postgres://postgres:postgres@localhost:5432/universal-db"
 $ npm install prisma --save-dev
 $ npx prisma init
 (Create/Write Schema Models)
-$ npx prisma migrate dev --name "init"
 
+$ npx prisma migrate dev --name "init" (need to run in new OS to start 1.0)
 # add following at the end of the package.json to run the seed
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   }
+$ npx prisma db seed (need to run in new OS to start 2.0)
 
-$ npx prisma db seed
 $ npx prisma studio
 
 # Prisma to NestJS
